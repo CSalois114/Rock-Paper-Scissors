@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rock Paper Scissors</title>
+    </head>
+    <body align="center">
+        <h2>Rock Paper Scissors</h2>
+        <div class="display">
+            <h1 id="score">0:0</h1>
+            <h3 id="playerInfo"></h3>
+        </div>
+
+        <div class="buttons">
+            <button id="rock" class="playOptions" type="button">Rock</button>
+            <button id="paper" class="playOptions" type="button">Paper</button>
+            <button id="scissors" class="playOptions" type="button">Scissors</button>
+            <div class="buttons">
+                <button id="newGame" type="button">New Game</button>
+            </div>
+        </div>
+        
+
+    </body>
+
+    <script>
+
+        const NUMBEROFROUNDS = 5;
+
+        let PLAYERSCORE = 0;
+        let COMPUTERSCORE = 0;
+
+        document.getElementById("playerInfo").innerHTML = "Best of " + NUMBEROFROUNDS +
+                 " rounds. Select a play option to begin a round.";
+
+        document.getElementById("newGame").addEventListener("click", newGame);
+
+        document.getElementById("rock").addEventListener("click", newRound);
+        document.getElementById("paper").addEventListener("click", newRound);
+        document.getElementById("scissors").addEventListener("click", newRound);
+
+
+        function newGame() {
+            PLAYERSCORE = 0;
+            COMPUTERSCORE = 0;
+            document.getElementById("score").innerHTML = "0:0";
+            document.getElementById("playerInfo").innerHTML = "Best of " + NUMBEROFROUNDS +
+                 " rounds. Select a play option to begin a round.";
+            console.log("new game") 
+        }
+
+
+        function newRound() {
+            let playerSelection = this.id;
+            console.log("player selection " + playerSelection);
+
+            let computerSelection = getComputerSelection();
+            console.log("computer selection " + computerSelection);
+
+            roundResult = getRoundResult(playerSelection, computerSelection)
+            if (roundResult == "win") PLAYERSCORE++; 
+            if (roundResult == "loose") COMPUTERSCORE++;
+            document.getElementById("score").innerHTML= PLAYERSCORE + ":" + COMPUTERSCORE;
+            document.getElementById("playerInfo").innerHTML = "You: " + playerSelection.toUpperCase() + 
+                    " vs Computer:  " + computerSelection.toUpperCase() + ". You " + roundResult + " this round."
+
+            console.log("you " + roundResult + ". " + PLAYERSCORE + ":" + COMPUTERSCORE);
+
+
+            // Checks if the game is over
+            if (PLAYERSCORE > (NUMBEROFROUNDS / 2) || COMPUTERSCORE > (NUMBEROFROUNDS / 2)){
+                let gameResult = (PLAYERSCORE > COMPUTERSCORE) ? "You win!" : "You loose.";
+                document.getElementById("score").innerHTML= "Game Over: "+ gameResult + " " + PLAYERSCORE + ":" + COMPUTERSCORE;
+                PLAYERSCORE = 0;
+                COMPUTERSCORE = 0;
+            }
+        }
+
+
+        function getRoundResult(playerSelection, computerSelection) {
+            if (playerSelection === computerSelection) return 'tie';
+            else if (playerSelection === 'rock') return (computerSelection === 'scissors' ? 'win' : 'loose');
+            else if (playerSelection === 'paper') return (computerSelection === 'rock' ? 'win' : 'loose');
+            else if (playerSelection === 'scissors') return (computerSelection === 'paper' ? 'win' : 'loose');
+        }
+
+
+        function getComputerSelection() {
+            let playOptions = ['rock','paper','scissors'];
+            let computerSelection = playOptions[Math.floor(Math.random() * playOptions.length)];
+            return computerSelection;
+        }
+
+        
+
+
+
+    </script>
+
+    
+</html>
